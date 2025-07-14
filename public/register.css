@@ -1,0 +1,153 @@
+:root {
+  --red: #d21f26;
+  --gold: #d4a017;
+  --ochre: #c28840;
+  --text: #000;
+  --bg: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--text);
+
+  background-color: #fff8e1;
+  background-image: url('images/SQ BG 01 blur.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+
+
+header {
+  background-color: #fff;
+  border-bottom: 4px solid var(--gold);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+header h1 {
+  color: var(--red);
+  margin: 0;
+}
+
+header img#logo {
+  height: 60px;
+}
+
+main {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+  main {
+    max-width: 1000px;
+  }
+}
+
+
+#search-section {
+  background-color: #fff8e1;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+#search {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+#results {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.result-item {
+  border: 1px solid var(--gold);
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.result-item:hover {
+  background-color: #fff3c1;
+}
+
+#selected-section {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 1rem;
+}
+
+#employee-card {
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fff;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#employee-card img {
+  height: 100px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+#drawNumber {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  margin-bottom: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#assignBtn {
+  background-color: var(--red);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#assignBtn:hover {
+  background-color: #b71b20;
+  transform: scale(1.05);
+}
+
+#status {
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+* {
+  box-sizing: border-box;
+}
