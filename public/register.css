@@ -148,6 +148,61 @@ main {
   font-weight: bold;
 }
 
+#numberCheck {
+  font-weight: bold;
+  margin-top: 0.3em;
+  margin-bottom: 0.5em;
+}
+
+.assigned-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;     /* การ์ดขาว */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-width: 180px;
+  max-width: 220px;
+  flex: 1 1 200px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.assigned-card img {
+  height: 40px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.assigned-card .info {
+  flex-grow: 1;
+}
+
+.assigned-card .name {
+  font-weight: bold;
+  display: block;
+}
+
+.assigned-card .number {
+  color: #555;
+  font-size: 0.9em;
+}
+
+.assigned-card .unassignBtn {
+  background-color: #d9534f;
+  border: none;
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#assignedList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+}
+
 * {
   box-sizing: border-box;
 }

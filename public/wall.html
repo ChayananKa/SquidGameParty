@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🦑 Squid Game Party Wall</title>
+  <link rel="stylesheet" href="wall.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-container">
+        <img src="/images/logo_nct.png" alt="Logo" class="logo">
+        <div class="logo-text">
+          <span class="company-name">NAMCHOW (THAILAND) LTD.</span>
+          <span class="event-theme">Survival Party 2025</span>
+        </div>
+      </div>
+      <h1 class="event-name">🦑 Squid Game Party</h1>
+    </div>
+    
+    <div class="header-right">
+      <div id="statusText" class="status-text">📥 Waiting for Registration</div>
+      <div class="controls">
+        <button id="soundToggle">🔊 Sound On</button>
+        <label for="countSelect">สุ่มออก:</label>
+        <select id="countSelect">
+          <option value="1">1 คน</option>
+          <option value="2">2 คน</option>
+          <option value="3">3 คน</option>
+          <option value="4">4 คน</option>
+          <option value="5">5 คน</option>
+          <option value="6">6 คน</option>
+          <option value="7">7 คน</option>
+          <option value="8">8 คน</option>
+          <option value="9">9 คน</option>
+          <option value="10">10 คน</option>
+        </select>
+        <button id="startBtn">🎤 Start the Show</button>
+        <button id="randomBtn" disabled>🎲 Random Out</button>
+        <button id="resetBtn" disabled>🛑 Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="gridContainer" class="grid-container">
+    <!-- 
+      Slot structure to be rendered by JS:
+
+      <div class="slot">
+        <div class="slot-content">
+          <div class="photo">
+            <img src="...">
+          </div>
+          <div class="number">#12</div>
+        </div>
+      </div>
+    -->
+  </main>
+
+  <footer class="footer-bar">
+    <div id="outListScroll">OUT: ไม่มีใครตกรอบตอนนี้</div>
+  </footer>
+
+  <script src="wall.js"></script>
+</body>
+</html>

@@ -1,17 +1,30 @@
 let employees = [];
 let selectedEmployee = null;
-
+let usedNumbersMap = {};
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadEmployees();
+
+  document.getElementById('search').addEventListener('input', handleSearch);
+  document.getElementById('assignBtn').addEventListener('click', handleAssign);
+  document.getElementById('drawNumber').addEventListener('input', validateDrawNumber);
+});
+
+function loadEmployees() {
   fetch('/api/employees')
     .then(res => res.json())
     .then(data => {
       employees = data;
-    });
+      usedNumbersMap = {};
+      data.forEach(emp => {
+        if (emp.drawNumber) {
+          usedNumbersMap[emp.drawNumber] = emp.name;
+        }
+      });
 
-  document.getElementById('search').addEventListener('input', handleSearch);
-  document.getElementById('assignBtn').addEventListener('click', handleAssign);
-});
+      renderAssignedList();
+    });
+}
 
 function handleSearch(e) {
   const query = e.target.value.toLowerCase();
@@ -19,8 +32,8 @@ function handleSearch(e) {
   resultsDiv.innerHTML = '';
 
   const filtered = employees.filter(emp =>
-    emp.name.toLowerCase().includes(query) ||
-    emp.employeeId.toLowerCase().includes(query)
+    (!emp.drawNumber) &&
+    (emp.name.toLowerCase().includes(query) || emp.employeeId.toLowerCase().includes(query))
   );
 
   filtered.forEach(emp => {
@@ -32,9 +45,6 @@ function handleSearch(e) {
     `;
     div.addEventListener('click', () => selectEmployee(emp));
     resultsDiv.appendChild(div);
-
-    // ✅ Animate each item
-    gsap.from(div, { opacity: 0, y: 20, duration: 0.4 });
   });
 }
 
@@ -44,13 +54,35 @@ function selectEmployee(emp) {
   document.getElementById('name').textContent = emp.name;
   document.getElementById('employeeId').textContent = emp.employeeId;
   document.getElementById('status').textContent = '';
+  document.getElementById('drawNumber').value = '';
+  document.getElementById('numberCheck').textContent = '';
+}
 
-  // ✅ Animate Preview Card
-  gsap.from("#employee-card", { scale: 0.8, opacity: 0, duration: 0.5 });
+function validateDrawNumber() {
+  const number = parseInt(document.getElementById('drawNumber').value);
+  const checkDiv = document.getElementById('numberCheck');
+  const assignBtn = document.getElementById('assignBtn');
+
+  if (!number || isNaN(number) || number <= 0) {
+    checkDiv.textContent = '❌ Please enter a valid number';
+    checkDiv.style.color = 'red';
+    assignBtn.disabled = true;
+    return;
+  }
+
+  if (usedNumbersMap[number]) {
+    checkDiv.textContent = `❌ Number ${number} is already assigned to ${usedNumbersMap[number]}`;
+    checkDiv.style.color = 'red';
+    assignBtn.disabled = true;
+  } else {
+    checkDiv.textContent = `✅ Number ${number} is available`;
+    checkDiv.style.color = 'green';
+    assignBtn.disabled = false;
+  }
 }
 
 function handleAssign() {
-  const number = document.getElementById('drawNumber').value;
+  const number = parseInt(document.getElementById('drawNumber').value);
   const statusDiv = document.getElementById('status');
 
   if (!selectedEmployee) {
@@ -68,7 +100,7 @@ function handleAssign() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       employeeId: selectedEmployee.employeeId,
-      drawNumber: parseInt(number)
+      drawNumber: number
     })
   })
     .then(res => res.json())
@@ -78,6 +110,7 @@ function handleAssign() {
       } else {
         showSuccess('✅ Assigned successfully');
         resetForm();
+        loadEmployees();
       }
     })
     .catch(() => {
@@ -85,32 +118,69 @@ function handleAssign() {
     });
 }
 
+function renderAssignedList() {
+  const assignedDiv = document.getElementById('assignedList');
+  assignedDiv.innerHTML = '';
+
+  const assigned = employees.filter(emp => emp.drawNumber);
+
+  if (assigned.length === 0) {
+    assignedDiv.innerHTML = '<p>ยังไม่มีใครลงทะเบียน</p>';
+    return;
+  }
+
+  const reversed = [...assigned].reverse();
+
+  reversed.forEach(emp => {
+    const card = document.createElement('div');
+    card.className = 'assigned-card';
+    card.innerHTML = `
+      <img src="${emp.photo}" height="40" alt="" />
+      <div class="info">
+        <span class="name">${emp.name}</span>
+        <span class="number">#${emp.drawNumber}</span>
+      </div>
+      <button class="unassignBtn">🗑️</button>
+    `;
+    card.querySelector('.unassignBtn').addEventListener('click', () => unassignEmployee(emp.employeeId));
+    assignedDiv.appendChild(card);
+  });
+}
+
+function unassignEmployee(employeeId) {
+  if (!confirm('คุณต้องการล้างหมายเลขของคนนี้จริงหรือไม่?')) return;
+
+  fetch('/api/unassign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ employeeId })
+  })
+    .then(res => res.json())
+    .then(() => {
+      loadEmployees();
+    });
+}
+
 function showError(message) {
   const statusDiv = document.getElementById('status');
   statusDiv.textContent = message;
   statusDiv.style.color = 'red';
-
-  // ✅ Shake Animation
-  gsap.fromTo(statusDiv, { x: -5 }, { x: 5, duration: 0.1, yoyo: true, repeat: 5 });
 }
 
 function showSuccess(message) {
   const statusDiv = document.getElementById('status');
   statusDiv.textContent = message;
   statusDiv.style.color = 'green';
-
-  // ✅ Flash Animation
-  gsap.fromTo(statusDiv, 
-    { backgroundColor: 'var(--gold)' }, 
-    { backgroundColor: 'transparent', duration: 1 });
 }
 
 function resetForm() {
-  document.getElementById('drawNumber').value = '';
-  document.getElementById('search').value = '';
-  document.getElementById('results').innerHTML = '';
+  selectedEmployee = null;
   document.getElementById('photo').src = '';
   document.getElementById('name').textContent = '';
   document.getElementById('employeeId').textContent = '';
-  selectedEmployee = null;
+  document.getElementById('drawNumber').value = '';
+  document.getElementById('numberCheck').textContent = '';
+  document.getElementById('status').textContent = '';
+  document.getElementById('search').value = '';
+  document.getElementById('results').innerHTML = '';
 }

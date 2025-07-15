@@ -4,7 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = 3000;
 
-const MAX_DRAW_NUMBER = 100;
+const MAX_DRAW_NUMBER = 90;
 
 
 // เปิดไฟล์ staff.db
@@ -131,4 +131,27 @@ app.post('/api/reset', (req, res) => {
     }
     res.json({ message: 'Reset completed' });
   });
+});
+
+// ยกเลิกหมายเลข (Unassign)
+app.post('/api/unassign', (req, res) => {
+  const { employeeId } = req.body;
+
+  if (!employeeId) {
+    return res.status(400).json({ error: 'employeeId is required' });
+  }
+
+  const sql = 'UPDATE employees SET drawNumber = NULL WHERE employeeId = ?';
+  db.run(sql, [employeeId], function(err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.json({ message: 'Unassigned successfully' });
+  });
+});
+
+app.get('/api/config', (req, res) => {
+  res.json({ maxDrawNumber: MAX_DRAW_NUMBER });
 });
