@@ -232,3 +232,12 @@ header {
   0% { opacity: 0; transform: scale(0.7); }
   100% { opacity: 1; transform: scale(1); }
 }
+
+.random-flash {
+  animation: flashSlot 0.4s infinite alternate;
+}
+
+@keyframes flashSlot {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}

@@ -2,12 +2,13 @@ let employees = [];
 let soundOn = true;
 let MAX_DRAW_NUMBER;
 let previousEmployees = [];
-
+let currentPhase = 'register';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadConfig();
   await loadEmployees();
   setupControls();
+  updateControls();
 
   // 💥 Auto-refresh every 3 seconds
   setInterval(() => {
@@ -114,14 +115,26 @@ async function handleRandom() {
   const count = parseInt(document.getElementById('countSelect').value);
   if (!count || count <= 0) return;
 
+  // 1️⃣ Start Fake Animation
+  startRandomAnimation();
+
+  // 2️⃣ เล่นเสียง Effect
+  playSound('random');
+
+  // 3️⃣ รอ Delay (เช่น 5 วินาที)
+  await new Promise(resolve => setTimeout(resolve, 6000));
+
+  // 4️⃣ Call API จริง
   await fetch('/api/randomOut', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ count })
   });
 
-  playSound('random');
   await loadEmployees();
+
+  // 5️⃣ หยุด Animation
+  stopRandomAnimation();
 }
 
 async function handleReset() {
@@ -136,8 +149,12 @@ async function handleReset() {
 }
 
 function handleStart() {
-  alert('🎤 เริ่มงาน! ทุกคนเตรียมตัว!');
+  if (!confirm('⚠️ จะเริ่มงานแล้วนะ ปิดลงทะเบียนและเปิดการสุ่ม?')) return;
+
+  currentPhase = 'random';
+  updateControls();
   playSound('start');
+  alert('🎤 งานเริ่มแล้ว! ลงทะเบียนถูกปิด และสามารถสุ่ม Random Out ได้');
 }
 
 function toggleSound() {
@@ -204,4 +221,25 @@ function playSound(action) {
       return;
   }
   audio.play();
+}
+
+function updateControls() {
+  const isRegister = currentPhase === 'register';
+  document.getElementById('randomBtn').disabled = isRegister;
+  document.getElementById('resetBtn').disabled = isRegister;
+  document.getElementById('startBtn').disabled = !isRegister;
+}
+
+function startRandomAnimation() {
+  const slots = document.querySelectorAll('.slot');
+  slots.forEach(slot => {
+    slot.classList.add('random-flash');
+  });
+}
+
+function stopRandomAnimation() {
+  const slots = document.querySelectorAll('.slot');
+  slots.forEach(slot => {
+    slot.classList.remove('random-flash');
+  });
 }

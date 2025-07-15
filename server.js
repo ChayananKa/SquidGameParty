@@ -1,10 +1,10 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-
 const app = express();
 const PORT = 3000;
-
 const MAX_DRAW_NUMBER = 90;
+
+let CURRENT_PHASE = 'register';
 
 
 // เปิดไฟล์ staff.db
@@ -36,6 +36,11 @@ app.listen(PORT, () => {
 // เพิ่มหมายเลขให้พนักงาน
 app.post('/api/assign', (req, res) => {
   const { employeeId, drawNumber } = req.body;
+
+  if (CURRENT_PHASE !== 'register') {
+    return res.status(400).json({ error: 'Assign is not allowed. Registration is closed.' });
+  }
+  
   if (!employeeId || drawNumber == null) {
     return res.status(400).json({ error: 'employeeId and drawNumber are required' });
   }
@@ -154,4 +159,18 @@ app.post('/api/unassign', (req, res) => {
 
 app.get('/api/config', (req, res) => {
   res.json({ maxDrawNumber: MAX_DRAW_NUMBER });
+});
+
+app.get('/api/state', (req, res) => {
+  res.json({ phase: CURRENT_PHASE });
+});
+
+app.post('/api/start', (req, res) => {
+  CURRENT_PHASE = 'random';
+  res.json({ message: 'Phase changed to random' });
+});
+
+app.post('/api/openRegister', (req, res) => {
+  CURRENT_PHASE = 'register';
+  res.json({ message: 'Phase changed to register' });
 });
