@@ -155,10 +155,36 @@ header {
 
 /* Slot Content - divides inside slot into 2 equal columns */
 .slot-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.slot-content .photo {
+  flex: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.slot-content .photo img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.slot-content .number {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #FFDDDD;
+  text-shadow: 1px 1px 2px #000;
+  background: rgba(0,0,0,0.6);
 }
 
 /* Photo section (left) */
@@ -196,8 +222,9 @@ header {
 
 /* Status Highlights */
 .status-IN {
-  border-color: #00FF66;
-  box-shadow: 0 0 10px #00FF66;
+  border-color: #333;
+  box-shadow: none;
+  background-color: #111;
 }
 
 .status-OUT {
@@ -240,4 +267,57 @@ header {
 @keyframes flashSlot {
   from { opacity: 0.4; }
   to { opacity: 1; }
+}
+
+.slot.highlight {
+  border-color: gold;
+  box-shadow: 0 0 25px gold, 0 0 50px gold;
+  transform: scale(1.05);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+/* Popup Overlay */
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#popup.hidden {
+  display: none;
+}
+
+.popup-content {
+  background: #111;
+  padding: 2em;
+  text-align: center;
+  border-radius: 12px;
+  color: #FF3B3F;
+  box-shadow: 0 0 20px #FF3B3F;
+  max-width: 90%;
+}
+
+.popup-content img {
+  max-width: 300px;
+  border-radius: 12px;
+  margin-bottom: 1em;
+}
+
+.popup-content h2, .popup-content p {
+  margin: 0.5em 0;
+}
+
+.popup-content button {
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  background: #FF3B3F;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
