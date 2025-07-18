@@ -65,13 +65,21 @@
   <script src="wall.js"></script>
   <div id="popup" class="hidden">
     <div class="popup-content">
-      <img id="popup-photo" />
-      <h2 id="popup-name"></h2>
-      <p id="popup-number"></p>
-      <p id="popup-message"></p>
+      <h2 id="popup-title">❌ คุณถูกเชิญออกแล้ว ❌</h2>
+      <div id="popup-grid" class="popup-grid"></div>
       <button onclick="closePopup()">❌ ปิด</button>
     </div>
   </div>
+  <div id="popupFinalists" class="hidden">
+    <div class="popup-content">
+      <h2>🏆 คู่ชิงรอบสุดท้าย!</h2>
+      <p class="final-message">ใครจะอยู่ ใครจะไป 🥶</p>
+      <div id="finalists-grid"></div>
+      <button onclick="startFinalDuel()">🔥 เริ่มรอบตัดสิน!</button>
+    </div>
+  </div>
+
+  <div id="countdown" class="countdown hidden"></div>
 
 </body>
 </html>

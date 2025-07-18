@@ -173,6 +173,7 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 1; 
 }
 
 .slot-content .number {
@@ -252,12 +253,25 @@ header {
 }
 
 .slot.new-register {
-  animation: fadeInPop 0.8s ease;
+  animation: fadeInPop 0.9s ease-out;
+  z-index: 10;
+  position: relative;
 }
 
 @keyframes fadeInPop {
-  0% { opacity: 0; transform: scale(0.7); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+    filter: blur(6px);
+  }
+  80% {
+    transform: scale(1.05) rotate(3deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .random-flash {
@@ -320,4 +334,126 @@ header {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.popup-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5em;
+  margin-top: 1em;
+  max-width: 90vw;
+}
+
+.popup-grid .person {
+  background: #111;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #FF3B3F;
+  padding: 1em;
+  text-align: center;
+  width: 180px;
+}
+
+.popup-grid .person img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.popup-grid .person p {
+  margin: 0.3em 0;
+  color: #FFCCCC;
+  font-weight: bold;
+}
+
+.countdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10vw;
+  color: gold;
+  font-weight: bold;
+  text-shadow: 0 0 20px red;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.slot.fade-out {
+  opacity: 0.1;
+  transition: opacity 0.5s ease;
+}
+
+.slot.zoom {
+  transform: scale(1.2);
+  z-index: 5;
+}
+
+.status-WINNER {
+  border-color: gold;
+  box-shadow: 0 0 25px gold, 0 0 50px gold inset;
+  animation: winnerGlow 1s infinite alternate;
+}
+
+@keyframes winnerGlow {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+#popupFinalists .person {
+  display: inline-block;
+  margin: 10px;
+  text-align: center;
+}
+#popupFinalists img {
+  width: 120px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #999;
+}
+.final-message {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+#popupFinalists {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#popupFinalists.hidden {
+  display: none;
+}
+
+#popupFinalists .popup-content {
+  background: #111;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px #FF3B3F;
+  max-width: 600px;
+  color: #FFDDDD;
+}
+
+#popupFinalists .popup-content h2 {
+  color: gold;
+  margin-bottom: 0.5em;
+}
+
+#popupFinalists .popup-content button {
+  margin-top: 1.5em;
+  background: #FF3B3F;
+  color: white;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }

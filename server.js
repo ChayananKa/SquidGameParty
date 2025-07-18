@@ -86,7 +86,11 @@ app.post('/api/randomOut', (req, res) => {
   }
 
   // 1️⃣ ดึงคนที่ยัง IN
-  db.all('SELECT employeeId FROM employees WHERE status IS NULL OR UPPER(status) = "IN"', [], (err, rows) => {
+  db.all(`
+    SELECT employeeId 
+    FROM employees 
+    WHERE (status IS NULL OR UPPER(status) = 'IN') 
+      AND drawNumber IS NOT NULL`, [], (err, rows) => {
     if (err) {
       console.error(err.message);
       return res.status(500).json({ error: err.message });
